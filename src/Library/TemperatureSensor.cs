@@ -6,8 +6,13 @@ namespace Observer
 {
     public class TemperatureSensor : IObservado
     {
-        List<IObservador> observers = new List<IObservador>();
-
+        
+        public TemperatureSensor()
+        {
+            this.observers =  new List<IObservador>();
+        }
+        public List<IObservador> observers { get; private set; }
+                
         public Temperature Current { get; private set; }
 
         public void Subscribe(IObservador observer)
@@ -42,12 +47,7 @@ namespace Observer
                     if (start || (Math.Abs(temp.Value - previous.Value) >= 0.1m ))
                     {
                         this.Current = new Temperature(temp.Value, DateTime.Now);
-                        //Este foreach que sigue abajo sería notify
-                        //pero no se como implementarlo correctamente
-                        foreach (var observer in observers)
-                        {
-                            observer.Update(this.Current);
-                        }
+                        this.Notify();
                         previous = temp;
                         if (start)
                         {
@@ -55,6 +55,14 @@ namespace Observer
                         }
                     }
                 }
+            }
+        }
+
+        public void Notify()
+        {
+            foreach (IObservador observer in observers)
+            {
+                observer.Update(this.Current);
             }
         }
     }
