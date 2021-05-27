@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 namespace Observer
 {
@@ -6,6 +7,7 @@ namespace Observer
     {
         void Subscribe(IObservador observer);
         void Unsubscribe(IObservador observer);
-        void Notify();
+        //void Notify();
+        //ArrayList List<IObservador>();
     }
 }

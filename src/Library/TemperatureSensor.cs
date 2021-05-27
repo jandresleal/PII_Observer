@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Observer
 {
-    public class TemperatureSensor
+    public class TemperatureSensor : IObservado
     {
-        private List<TemperatureReporter> observers = new List<TemperatureReporter>();
+        List<IObservador> observers = new List<IObservador>();
 
         public Temperature Current { get; private set; }
 
-        public void Subscribe(TemperatureReporter observer)
+        public void Subscribe(IObservador observer)
         {
             if (! observers.Contains(observer))
             {
@@ -18,7 +18,7 @@ namespace Observer
             }
         }
 
-        public void Unsubscribe(TemperatureReporter observer)
+        public void Unsubscribe(IObservador observer)
         {
             if (observers.Contains(observer))
             {
@@ -42,9 +42,11 @@ namespace Observer
                     if (start || (Math.Abs(temp.Value - previous.Value) >= 0.1m ))
                     {
                         this.Current = new Temperature(temp.Value, DateTime.Now);
+                        //Este foreach que sigue abajo sería notify
+                        //pero no se como implementarlo correctamente
                         foreach (var observer in observers)
                         {
-                            observer.Update();
+                            observer.Update(this.Current);
                         }
                         previous = temp;
                         if (start)
