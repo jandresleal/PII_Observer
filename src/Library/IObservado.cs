@@ -1,6 +1,8 @@
+using System;
+
 namespace Observer
 {
-    public interface IObservable
+    public interface IObservado
     {
         void Subscribe(IObservador observer);
         void Unsubscribe(IObservador observer);
